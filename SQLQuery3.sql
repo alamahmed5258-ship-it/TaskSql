@@ -1,131 +1,132 @@
 USE CompanyDB;
 GO
+-- 1: Show the first 5 employees ordered by "last_name" in ascending order
 SELECT * 
 FROM Sales.employees;
 
--- Q2: Retrieve only the "first_name" and "last_name" columns
+--2: Retrieve only the "first_name" and "last_name" columns
 SELECT first_name, last_name 
 FROM Sales.employees;
 
--- Q3: Retrieve "full name" as one column from first_name and last_name
+-- 3: Retrieve "full name" as one column from first_name and last_name
 SELECT first_name + ' ' + last_name AS full_name 
 FROM Sales.employees;
 
--- Q4: Show the average salary of all employees (using AVG())
+-- 4: Show the average salary of all employees (using AVG())
 SELECT AVG(salary) AS average_salary 
 FROM Sales.employees;
 
--- Q5: Select employees whose salary is greater than 50000
+-- 5: Select employees whose salary is greater than 50000
 SELECT * 
 FROM Sales.employees
 WHERE salary > 50000;
 
--- Q6: Retrieve employees hired in the year 2020
+-- 6: Retrieve employees hired in the year 2020
 SELECT * 
 FROM Sales.employees
 WHERE YEAR(hire_date) = 2020;
 
--- Q7: List employees whose last names start with 'S'
+-- 7: List employees whose last names start with 'S'
 SELECT * 
 FROM Sales.employees
 WHERE last_name LIKE 'S%';
 
--- Q8: Display the top 10 highest-paid employees
+-- 8: Display the top 10 highest-paid employees
 SELECT TOP 10 * 
 FROM Sales.employees
 ORDER BY salary DESC;
 
--- Q9: Find employees with salaries between 40000 and 60000
+-- 9: Find employees with salaries between 40000 and 60000
 SELECT * 
 FROM Sales.employees
 WHERE salary BETWEEN 40000 AND 60000;
 
--- Q10: Show employees with names containing the substring 'man'
+-- 10: Show employees with names containing the substring 'man'
 SELECT * 
 FROM Sales.employees
 WHERE first_name LIKE '%man%' 
    OR last_name  LIKE '%man%';
 
-   -- Q11: Display employees with a NULL value in "hire_date"
+   -- 11: Display employees with a NULL value in "hire_date"
 SELECT * 
 FROM Sales.employees
 WHERE hire_date IS NULL;
 
 
--- Q12: Select employees with a salary in the set (40000, 45000, 50000)
+-- 12: Select employees with a salary in the set (40000, 45000, 50000)
 SELECT * 
 FROM Sales.employees
 WHERE salary IN (40000, 45000, 50000);
 
--- Q13: Retrieve employees hired between '2020-01-01' and '2021-01-01'
+-- 13: Retrieve employees hired between '2020-01-01' and '2021-01-01'
 SELECT * 
 FROM Sales.employees
 WHERE hire_date BETWEEN '2020-01-01' AND '2021-01-01';
 
--- Q14: List employees with salaries in descending order
+-- 14: List employees with salaries in descending order
 SELECT * 
 FROM Sales.employees
 ORDER BY salary DESC;
 
--- Q15: Show the first 5 employees ordered by "last_name" in ascending order
+-- 15: Show the first 5 employees ordered by "last_name" in ascending order
 SELECT TOP 5 * 
 FROM Sales.employees
 ORDER BY last_name ASC;
 
--- Q16: Display employees with a salary greater than 55000 and hired in 2020
+-- 16: Display employees with a salary greater than 55000 and hired in 2020
 SELECT * 
 FROM Sales.employees
 WHERE salary > 55000 
   AND YEAR(hire_date) = 2020;
 
--- Q17: Select employees whose first name is 'John' or 'Jane'
+-- 17: Select employees whose first name is 'John' or 'Jane'
 SELECT * 
 FROM Sales.employees
 WHERE first_name IN ('John', 'Jane');
 
--- Q18: List employees with a salary <= 55000 and a hire date after '2022-01-01'
+-- 18: List employees with a salary <= 55000 and a hire date after '2022-01-01'
 SELECT * 
 FROM Sales.employees
 WHERE salary <= 55000 
   AND hire_date > '2022-01-01';
 
--- Q19: Retrieve employees with a salary greater than the average salary
+-- 19: Retrieve employees with a salary greater than the average salary
 SELECT * 
 FROM Sales.employees
 WHERE salary > (SELECT AVG(salary) FROM Sales.employees);
 
--- Q20: Display the 3rd to 7th highest-paid employees (using OFFSET and FETCH)
+-- 20: Display the 3rd to 7th highest-paid employees (using OFFSET and FETCH)
 SELECT * 
 FROM Sales.employees
 ORDER BY salary DESC
 OFFSET 2 ROWS 
 FETCH NEXT 5 ROWS ONLY;
 
--- Q21: List employees hired after '2021-01-01' in alphabetical order
+-- 21: List employees hired after '2021-01-01' in alphabetical order
 SELECT * 
 FROM Sales.employees
 WHERE hire_date > '2021-01-01'
 ORDER BY first_name ASC, last_name ASC;
 
--- Q22: Retrieve employees with a salary > 50000 and last name not starting with 'A'
+-- 22: Retrieve employees with a salary > 50000 and last name not starting with 'A'
 SELECT * 
 FROM Sales.employees
 WHERE salary > 50000 
   AND last_name NOT LIKE 'A%';
 
--- Q23: Display employees with a salary that is not NULL
+-- 23: Display employees with a salary that is not NULL
 SELECT * 
 FROM Sales.employees
 WHERE salary IS NOT NULL;
 
--- Q24: Show employees with names containing 'e' or 'i' and a salary > 45000
+-- 24: Show employees with names containing 'e' or 'i' and a salary > 45000
 SELECT * 
 FROM Sales.employees
 WHERE (first_name LIKE '%e%' OR first_name LIKE '%i%' 
     OR last_name  LIKE '%e%' OR last_name  LIKE '%i%')
   AND salary > 45000;
 
--- Q25: Create a new table named "departments"
+-- 25: Create a new table named "departments"
 CREATE TABLE Sales.departments (
     department_id    INT          NOT NULL,
     department_name  VARCHAR(100) NOT NULL,
@@ -157,7 +158,7 @@ JOIN (
 GO
 
 
--- Q26: Add "department_id" to employees as a foreign key
+-- 26: Add "department_id" to employees as a foreign key
 ALTER TABLE Sales.employees
 ADD department_id INT NULL;
 GO
@@ -176,7 +177,7 @@ SET department_id = CASE
 GO
 
 
--- Q27: Retrieve all employees with their department names (INNER JOIN)
+-- 27: Retrieve all employees with their department names (INNER JOIN)
 SELECT e.employee_id,
        e.first_name,
        e.last_name,
@@ -187,7 +188,7 @@ INNER JOIN Sales.departments d
         ON e.department_id = d.department_id;
 
 
--- Q28: Retrieve employees who don't belong to any department (LEFT JOIN + NULL check)
+-- 28: Retrieve employees who don't belong to any department (LEFT JOIN + NULL check)
 SELECT e.employee_id,
        e.first_name,
        e.last_name
@@ -197,7 +198,7 @@ LEFT JOIN Sales.departments d
 WHERE d.department_id IS NULL;
 
 
--- Q29: Show all departments and their employee count (JOIN + GROUP BY)
+-- 29: Show all departments and their employee count (JOIN + GROUP BY)
 SELECT d.department_name,
        COUNT(e.employee_id) AS employee_count
 FROM Sales.departments d
@@ -207,7 +208,7 @@ GROUP BY d.department_id, d.department_name
 ORDER BY employee_count DESC;
 
 
--- Q30: Retrieve the highest-paid employee in each department (JOIN + MAX(salary))
+-- 30: Retrieve the highest-paid employee in each department (JOIN + MAX(salary))
 SELECT d.department_name,
        e.first_name,
        e.last_name,

@@ -1,7 +1,10 @@
-
 USE CompanyDB;
 GO
 
+-- =============================================
+-- Part 1
+
+-- create a table Employees with columns: Id, FirstName, LastName, Salary.
 CREATE TABLE dbo.Employees (
     Id         INT IDENTITY(1,1) NOT NULL,
     FirstName  VARCHAR(50)       NOT NULL,
@@ -11,6 +14,7 @@ CREATE TABLE dbo.Employees (
 );
 GO
 
+-- 1- Create a stored procedure named GetAllEmployees that selects all rows from Employees.
 CREATE PROCEDURE dbo.GetAllEmployees
 AS
 BEGIN
@@ -21,6 +25,7 @@ BEGIN
 END;
 GO
 
+-- 2- Create a stored procedure GetHighSalaryEmployees with one input parameter @MinSalary which Select all employees with Salary > @MinSalary
 CREATE PROCEDURE dbo.GetHighSalaryEmployees
     @MinSalary DECIMAL(10,2)
 AS
@@ -33,6 +38,7 @@ BEGIN
 END;
 GO
 
+-- 3- Create AddEmployee SP with @FirstName, @LastName, @Salary which Insert a new row into Employees.
 CREATE PROCEDURE dbo.AddEmployee
     @FirstName VARCHAR(50),
     @LastName  VARCHAR(50),
@@ -46,8 +52,11 @@ BEGIN
 END;
 GO
 
+-- =============================================
+-- Part 2
 
 
+-- Create a table EmployeeLog(Id, EmployeeId, Action, ActionDate).
 CREATE TABLE dbo.EmployeeLog (
     Id          INT IDENTITY(1,1) NOT NULL,
     EmployeeId  INT               NOT NULL,
@@ -57,8 +66,7 @@ CREATE TABLE dbo.EmployeeLog (
 );
 GO
 
-
-
+-- create AFTER INSERT Trigger which Automatically log when a new employee is added.
 CREATE TRIGGER dbo.trg_Employees_AfterInsert
 ON dbo.Employees
 AFTER INSERT
@@ -72,17 +80,15 @@ BEGIN
 END;
 GO
 
+-- =============================================
+-- Testing
 
-
-EXEC dbo.AddEmployee @FirstName = 'Ahmed', @LastName = 'Ali',   @Salary = 45000;
+EXEC dbo.AddEmployee @FirstName = 'Ahmed', @LastName = 'Ali',    @Salary = 45000;
 EXEC dbo.AddEmployee @FirstName = 'Sara',  @LastName = 'Hassan', @Salary = 60000;
 EXEC dbo.AddEmployee @FirstName = 'Omar',  @LastName = 'Samir',  @Salary = 75000;
 
-
 EXEC dbo.GetAllEmployees;
 
-
 EXEC dbo.GetHighSalaryEmployees @MinSalary = 50000;
-
 
 SELECT * FROM dbo.EmployeeLog;
